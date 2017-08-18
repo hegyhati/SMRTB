@@ -19,13 +19,18 @@ class ListController extends Controller
 		$repository=$this->getDoctrine()->getRepository('AppBundle:Job');
 		$jobs=$repository->findAll();
 		 
-		return $this->render('List.twig',array('jobs' => $jobs));
+		return $this->render('JobSelector.twig',array('jobs' => $jobs));
+    }
+    
+    public function jobsAction($state)
+    {
+        return $this->render('List.twig',array('jobs' => $this->getDoctrine()->getRepository('AppBundle:Job')->findByState($state)));
     }
     
     /**
-    * @Route("/api/jobs/{state}", defaults={"state" = -1})
+    * @Route("/api/jobs/{state}", defaults={"state" = -1}, name="JobsAPI")
     */
-    public function jobsAction($state)
+    public function jobsAPIAction($state)
     {
         $querybuilder =  $this->getDoctrine()->getRepository('AppBundle:Job')
             ->createQueryBuilder('j')
@@ -33,6 +38,9 @@ class ListController extends Controller
         if($state!=-1) $querybuilder->where('j.state = '.$state);
         return new JsonResponse($querybuilder->getQuery()->getResult());
     }
+    
+    
+
 }
 
 ?>
