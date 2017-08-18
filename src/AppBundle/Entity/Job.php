@@ -24,6 +24,11 @@ class Job
 	 */ 
 	protected $name = "";
 	
+    /**
+	 * @ORM\Column(type="text")
+	 */ 
+	protected $author = "";
+    
 	/**
 	 * @ORM\Column(type="text")
 	 */ 
@@ -201,5 +206,41 @@ class Job
     public function getReduceFunction()
     {
         return $this->reduceFunction;
+    }
+
+    /**
+     * Set author
+     *
+     * @param string $author
+     *
+     * @return Job
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return string
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+    
+    /**
+     * Get status
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        if(! $this->getFinalized()) return "Still editing";
+        else if (! $this->getFinished()) return "Ready to run or running";
+        else return "Finished";
     }
 }
