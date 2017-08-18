@@ -301,4 +301,26 @@ class Job
     {
         return $this->state;
     }
+    
+    public function getStringState() {
+        return $this->getStringByState($this->state);
+    }
+    
+    public static function getStringByState($state)
+    {
+        switch($state) {
+            case 0:
+                return "under editing"; break;
+            case 1:
+                return "finalized and ready to run"; break;
+            case 2: 
+                return "running Map jobs"; break;
+            case 3:
+                return "running Reduce jobs"; break;
+            case 4: 
+                return "finished"; break;
+        }    
+    }
 }
+
+

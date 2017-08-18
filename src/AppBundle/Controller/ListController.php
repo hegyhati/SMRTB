@@ -18,8 +18,17 @@ class ListController extends Controller
         $em=$this->getDoctrine()->getManager();
 		$repository=$this->getDoctrine()->getRepository('AppBundle:Job');
 		$jobs=$repository->findAll();
-		 
-		return $this->render('JobSelector.twig',array('jobs' => $jobs));
+        
+        $statenumbers=[0,1,2,3,4];
+        $states=[];
+        foreach($statenumbers as $number) {
+            $states[] = array(
+                'number'=> $number, 
+                'text'=> Job::getStringByState($number)
+            );
+        }
+		
+        return $this->render('JobSelector.twig',array('jobs' => $jobs, 'states' => $states));
     }
     
     public function jobsAction($state)

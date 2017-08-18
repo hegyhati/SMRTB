@@ -1,0 +1,17 @@
+{% extends 'main.twig' %}
+
+{% block title %}Job details for {{job.getName()}}{% endblock %}
+
+{% block body %}
+
+<h3>Name</h3>
+{{job.getName()}}
+
+<h3>Author</h3>
+{{job.getAuthor()}}
+
+<h3>State</h3>
+{{job.getStringState()}}
+
+{% endblock %}
+

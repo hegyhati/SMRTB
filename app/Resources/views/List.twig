@@ -1,7 +1,8 @@
 
 <ul>
 {% for job in  jobs %} 
-   <li><b>{{ job.getName()}}</b> - by {{ job.getAuthor() }}</li>
+   <li><b><a href="{{path('jobdetails',{'id':job.getId()})}}">
+    {{ job.getName()}}</b></a> - by {{ job.getAuthor() }}</li>
 {% endfor %}
 </ul>
 

@@ -4,20 +4,16 @@
 
 {% block body %}
 
-<h2> Jobs still under editing </h2>
-{{ render(controller('AppBundle:List:jobs', { 'state': 0 })) }}
+{% for state in states %}
+    <h2> Jobs {{state.text}} </h2>
+    {{ 
+        render(controller(
+            'AppBundle:List:jobs', 
+            { 'state': state.number }
+            )) 
+    }}
+{% endfor %}
 
-<h2> Jobs finalized and ready to run </h2>
-{{ render(controller('AppBundle:List:jobs', { 'state': 1 })) }}
-
-<h2> Jobs currently running Map jobs </h2>
-{{ render(controller('AppBundle:List:jobs', { 'state': 2 })) }}
-
-<h2> Jobs currently running Reduce jobs </h2>
-{{ render(controller('AppBundle:List:jobs', { 'state': 3 })) }}
-
-<h2> Finished jobs </h2>
-{{ render(controller('AppBundle:List:jobs', { 'state': 4 })) }}
 
 {% endblock %}
 
