@@ -24,6 +24,18 @@ class Job
 	 */ 
 	protected $name = "";
 	
+    
+    /**
+     * @ORM\OneToMany(targetEntity="MapJob", mappedBy="mapjob")
+     */
+    private $mapjobs;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ReduceJob", mappedBy="reducejob")
+     */
+    private $reducejobs;
+    
+    
     /**
 	 * @ORM\Column(type="text")
 	 */ 
@@ -242,5 +254,81 @@ class Job
         if(! $this->getFinalized()) return "Still editing";
         else if (! $this->getFinished()) return "Ready to run or running";
         else return "Finished";
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->mapjobs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->reducejobs = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add mapjob
+     *
+     * @param \AppBundle\Entity\MapJob $mapjob
+     *
+     * @return Job
+     */
+    public function addMapjob(\AppBundle\Entity\MapJob $mapjob)
+    {
+        $this->mapjobs[] = $mapjob;
+
+        return $this;
+    }
+
+    /**
+     * Remove mapjob
+     *
+     * @param \AppBundle\Entity\MapJob $mapjob
+     */
+    public function removeMapjob(\AppBundle\Entity\MapJob $mapjob)
+    {
+        $this->mapjobs->removeElement($mapjob);
+    }
+
+    /**
+     * Get mapjobs
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMapjobs()
+    {
+        return $this->mapjobs;
+    }
+
+    /**
+     * Add reducejob
+     *
+     * @param \AppBundle\Entity\ReduceJob $reducejob
+     *
+     * @return Job
+     */
+    public function addReducejob(\AppBundle\Entity\ReduceJob $reducejob)
+    {
+        $this->reducejobs[] = $reducejob;
+
+        return $this;
+    }
+
+    /**
+     * Remove reducejob
+     *
+     * @param \AppBundle\Entity\ReduceJob $reducejob
+     */
+    public function removeReducejob(\AppBundle\Entity\ReduceJob $reducejob)
+    {
+        $this->reducejobs->removeElement($reducejob);
+    }
+
+    /**
+     * Get reducejobs
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReducejobs()
+    {
+        return $this->reducejobs;
     }
 }
