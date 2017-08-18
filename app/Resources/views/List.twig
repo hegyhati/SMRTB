@@ -1,0 +1,11 @@
+{% extends 'main.twig' %}
+
+{% block title %}List of jobs{% endblock %}
+
+{% block body %}
+    <ul>
+    {% for job in jobs %}
+        <li><b>{{ job.getName()}}</b> - {{ job.getStatus() }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
