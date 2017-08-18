@@ -13,5 +13,40 @@
 <h3>State</h3>
 {{job.getStringState()}}
 
+<h3>Input</h3>
+<textarea >
+{{job.getInputFile()}}
+</textarea>
+
+<h3>Map function</h3>
+<textarea >
+{{job.getMapFunction()}}
+</textarea>
+
+<h3>Reduce function</h3>
+<textarea >
+{{job.getReduceFunction()}}
+</textarea>
+
+
+<h3>Map jobs</h3>
+<table border=1>
+    <tr>
+        <th>ID</th>
+        <th>Chunk</th>
+        <th>Worker</th>
+        <th>Result</th>
+    </tr>
+    {% for mjob in job.mapjobs %}
+    <tr>
+        <td>{{mjob.getId()}}</td>
+        <td>{{mjob.getInputChunk()}}</td>
+        <td>{{mjob.getWorker()}}</td>
+        <td>{{mjob.getFinished()}}</td>
+    </tr>
+    {% endfor %}
+    
+</table>
+
 {% endblock %}
 

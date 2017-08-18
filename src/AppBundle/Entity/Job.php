@@ -26,12 +26,12 @@ class Job
 	
     
     /**
-     * @ORM\OneToMany(targetEntity="MapJob", mappedBy="mapjob")
+     * @ORM\OneToMany(targetEntity="MapJob", mappedBy="job")
      */
     private $mapjobs;
 
     /**
-     * @ORM\OneToMany(targetEntity="ReduceJob", mappedBy="reducejob")
+     * @ORM\OneToMany(targetEntity="ReduceJob", mappedBy="job")
      */
     private $reducejobs;
     

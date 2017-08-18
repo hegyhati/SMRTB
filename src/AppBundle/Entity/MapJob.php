@@ -20,13 +20,13 @@ class MapJob
 	protected $id;
 	
     /**
-     * @ORM\ManyToOne(targetEntity="Job", inversedBy="mapjobs")
+     * @ORM\ManyToOne(targetEntity="Job", inversedBy="mapjob")
      * @ORM\JoinColumn(name="job_id", referencedColumnName="id")
      */
     private $job;
     
     /**
-     * @ORM\OneToMany(targetEntity="IntermediatePair", mappedBy="intermediatepair")
+     * @ORM\OneToMany(targetEntity="IntermediatePair", mappedBy="mapjob")
      */
     private $intermediatepairs;
     
