@@ -50,11 +50,9 @@ class NewJob extends ContainerAwareCommand
             $job->setInputFile($helper->ask($input, $output, 
                 new Question('<info>Input:</info> ', 'alma,korte,banan,barack')));
             
-            $job->setFinalized($helper->ask($input, $output, 
-                new ConfirmationQuestion('<info>Is the job finalized?</info> ', false)));
+            $job->setState($helper->ask($input, $output, 
+                new Question('<info>What is the state? (0-4) </info> ', 0)));
             
-            $job->setFinished($helper->ask($input, $output, 
-                new ConfirmationQuestion('<info>Is the job finished?</info> ', false)));
             $em->persist($job);
         } else if ($test=="abc" || $test == "all") {
             $jobabc = new Job();
@@ -62,8 +60,7 @@ class NewJob extends ContainerAwareCommand
                 ->setName("Character counter")
                 ->setAuthor("Anonymus")
                 ->setInputFile("adf,sdfg,gs,rg,sgfg,sgs,sfd,g,fdg,gerer,gsdfserg")
-                ->setFinalized(true)
-                ->setFinished(false)
+                ->setState(1)
                 ->setMapFunction("function map(string inputchunk){ var mapoutput = []; return mapoutput;}")
                 ->setReduceFunction("function reduce (string key, array values){ var reduceoutput = []; return reduceoutput;}")
                 ;

@@ -5,7 +5,7 @@
 {% block body %}
     <ul>
     {% for job in jobs %}
-        <li><b>{{ job.getName()}}</b> - {{ job.getStatus() }}</li>
+        <li><b>{{ job.getName()}}</b> - {{ job.getState() }}</li>
     {% endfor %}
     </ul>
 {% endblock %}

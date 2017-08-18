@@ -46,16 +46,18 @@ class Job
 	 */ 
 	protected $inputFile = "";
 	
+    
+    const editing = 0;
+    const finalized = 1;
+    const runningMap = 2;
+    const runningReduce = 3;
+    const finished =4;
 	/**
-	 * @ORM\Column(type="boolean")
+	 * @ORM\Column(type="integer")
 	 */ 
-	protected $finalized = false;
+	protected $state = Job::editing;
     
-    /**
-	 * @ORM\Column(type="boolean")
-	 */ 
-	protected $finished = false;
-    
+       
     /**
 	 * @ORM\Column(type="text")
 	 */ 
@@ -124,53 +126,7 @@ class Job
         return $this->inputFile;
     }
 
-    /**
-     * Set finalized
-     *
-     * @param boolean $finalized
-     *
-     * @return Job
-     */
-    public function setFinalized($finalized)
-    {
-        $this->finalized = $finalized;
-
-        return $this;
-    }
-
-    /**
-     * Get finalized
-     *
-     * @return boolean
-     */
-    public function getFinalized()
-    {
-        return $this->finalized;
-    }
-
-    /**
-     * Set finished
-     *
-     * @param boolean $finished
-     *
-     * @return Job
-     */
-    public function setFinished($finished)
-    {
-        $this->finished = $finished;
-
-        return $this;
-    }
-
-    /**
-     * Get finished
-     *
-     * @return boolean
-     */
-    public function getFinished()
-    {
-        return $this->finished;
-    }
+    
 
     /**
      * Set mapFunction
@@ -244,17 +200,7 @@ class Job
         return $this->author;
     }
     
-    /**
-     * Get status
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        if(! $this->getFinalized()) return "Still editing";
-        else if (! $this->getFinished()) return "Ready to run or running";
-        else return "Finished";
-    }
+    
     /**
      * Constructor
      */
@@ -330,5 +276,29 @@ class Job
     public function getReducejobs()
     {
         return $this->reducejobs;
+    }
+
+    /**
+     * Set state
+     *
+     * @param integer $state
+     *
+     * @return Job
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get state
+     *
+     * @return integer
+     */
+    public function getState()
+    {
+        return $this->state;
     }
 }

@@ -23,17 +23,15 @@ class ListController extends Controller
     }
     
     /**
-    * @Route("/api/jobs/{status}", defaults={"status" = "all"})
+    * @Route("/api/jobs/{state}", defaults={"state" = -1})
     */
-    public function jobsAction($status)
+    public function jobsAction($state)
     {
         $querybuilder =  $this->getDoctrine()->getRepository('AppBundle:Job')
             ->createQueryBuilder('j')
             ->select('j.name, j.author');
-        if($status=="edit") $querybuilder->where('j.finalized = false');
-        else if ($status=="finalized") $querybuilder->where('j.finalized = true')->where('j.finished = false');
-        else if ($status=="finished") $querybuilder->where('j.finished = true');
-		return new JsonResponse($querybuilder->getQuery()->getResult());
+        if($state!=-1) $querybuilder->where('j.state = '.$state);
+        return new JsonResponse($querybuilder->getQuery()->getResult());
     }
 }
 
