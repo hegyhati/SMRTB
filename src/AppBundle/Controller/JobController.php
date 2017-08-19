@@ -3,11 +3,13 @@
 namespace AppBundle\Controller;
 use AppBundle\Entity\Job;
 use AppBundle\Entity\MapJob;
+use AppBundle\Entity\IntermediatePair;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Request;
 
 class JobController extends Controller
 {
@@ -126,6 +128,40 @@ class JobController extends Controller
             array('job' => $job,'mapdata' => $jobdata));
         
         else return new Response($jobdata);
+    }
+    
+    /**
+    * @Route("/api/mapresult/{jobid}/{mapjobid}", name="mapresultAPI")
+    * @Method("POST")
+    */
+    public function mapResultAction($jobid,$mapjobid)
+    {   
+        $em=$this->getDoctrine()->getManager();
+        $jrepository=$this->getDoctrine()->getRepository('AppBundle:Job');   
+        $mrepository=$this->getDoctrine()->getRepository('AppBundle:MapJob');
+        $prepository=$this->getDoctrine()->getRepository('AppBundle:IntermediatePair');  
+        
+        $request = Request::createFromGlobals();
+        $json = json_decode($request->getContent());
+        
+        $worker = $json->worker;
+        $results = $json->results;
+        $job = $jrepository->findOneById($jobid);
+        $mapjob = $mrepository->findOneById($mapjobid);
+        foreach ($results as $result) {
+            $pair = new IntermediatePair();
+            $pair
+                ->setMapjob($mapjob)
+                ->setKey($result->key)
+                ->setValue($result->value);
+            $em->persist($pair);
+        }
+        $mapjob
+            ->setFinished(true)
+            ->setWorker($worker);
+        $em->flush();
+        
+        return new JsonResponse($this->mapreduceJSON($jobid));
     }
     
 
