@@ -26,7 +26,7 @@ class ReduceJob
     private $job;
     
     /**
-     * @ORM\OneToMany(targetEntity="IntermediatePair", mappedBy="intermediatepair")
+     * @ORM\OneToMany(targetEntity="IntermediatePair", mappedBy="reducejob")
      */
     private $intermediatepairs;
     

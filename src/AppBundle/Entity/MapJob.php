@@ -20,7 +20,7 @@ class MapJob
 	protected $id;
 	
     /**
-     * @ORM\ManyToOne(targetEntity="Job", inversedBy="mapjob")
+     * @ORM\ManyToOne(targetEntity="Job", inversedBy="mapjobs")
      * @ORM\JoinColumn(name="job_id", referencedColumnName="id")
      */
     private $job;
