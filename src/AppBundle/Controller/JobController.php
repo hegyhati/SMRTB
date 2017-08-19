@@ -65,11 +65,9 @@ class JobController extends Controller
         return new JsonResponse($querybuilder->getQuery()->getResult()[0]);
     }
     
-    /**
-    * @Route("/api/job/{id}/mapreduce", name="mapreduceAPI")
-    * @Method("GET")
-    */
-    public function mapreduceAPIAction($id)
+    
+    
+    public function mapreduceJSON($id)
     {
         $data = array();
         $em=$this->getDoctrine()->getManager();
@@ -99,10 +97,36 @@ class JobController extends Controller
         }
         $data['jobid'] = $id;
         $data['state'] = $job->getState();
-        return new JsonResponse($data);
+        return $data;
     }
     
-  
+    /**
+    * @Route("/api/job/{id}/mapreduce", name="mapreduceAPI")
+    * @Method("GET")
+    */
+    public function mapreduceAPIAction($id)
+    {        
+        return new JsonResponse($this->mapreduceJSON($id));
+    }
+    
+    /**
+    * @Route("/job/{id}/mapreduce", name="mapreduce")
+    * @Method("GET")
+    */
+    public function mapreduceAction($id)
+    {
+        $em=$this->getDoctrine()->getManager();
+		$repository=$this->getDoctrine()->getRepository('AppBundle:Job');
+        $job = $repository->findOneById($id);
+        
+        
+        $jobdata = $this->mapreduceJSON($id);
+        if($jobdata['state'] == 2) return $this->render(
+            'MapJob.twig', 
+            array('job' => $job,'mapdata' => $jobdata));
+        
+        else return new Response($jobdata);
+    }
     
 
 }

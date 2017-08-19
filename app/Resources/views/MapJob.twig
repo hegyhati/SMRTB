@@ -1,0 +1,31 @@
+{% extends 'main.twig' %}
+
+{% block title %}Mapjob ({{mapdata.mapjobid}}) for {{job.getName()}}{% endblock %}
+
+{% block body %}
+<h1>Mapjob ({{mapdata.mapjobid}}) for {{job.getName()}}</h1>
+
+<h3>Job info</h3>
+<ul>
+    <li><b>Name: </b> {{job.getName()}}</li>
+    <li><b>Author: </b>{{job.getAuthor()}}</li>
+</ul>
+
+
+
+<h3>MapJob data</h3>
+<h4>ID</h4> 
+{{mapdata.mapjobid}}
+
+<h4>InputChunk</h4>
+<textarea >
+{{mapdata.chunk}}
+</textarea>
+
+{% endblock %}
+
+
+{% block javascripts %}
+<script>{{job.getMapFunction()}}</script>
+<script>{{job.getMapFunction()}}</script>
+{% endblock %}
