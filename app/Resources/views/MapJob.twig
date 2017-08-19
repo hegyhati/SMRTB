@@ -20,9 +20,15 @@
 <h4>InputChunk</h4>
 <textarea id="chunk">{{mapdata.chunk}}</textarea>
 
+<br />
+<button type="button" onclick="mapsolve()">Solve</button>
+
 {% endblock %}
 
 
 {% block javascripts %}
 <script>{{job.getMapFunction()|raw}}</script>
+
+<script src="{{ asset('js/mapsolve.js') }}"></script>
+
 {% endblock %}
