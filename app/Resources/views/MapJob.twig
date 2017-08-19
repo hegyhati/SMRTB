@@ -14,7 +14,8 @@
 
 
 <h3>MapJob data</h3>
-<h4>ID</h4> 
+<h4>ID</h4>
+
 {{mapdata.mapjobid}}
 
 <h4>InputChunk</h4>
@@ -28,7 +29,8 @@
 
 {% block javascripts %}
 <script>{{job.getMapFunction()|raw}}</script>
-
+<script>function getJobId(){return {{job.getId()}};}</script>
+<script>function getMapJobId(){return {{mapdata.mapjobid}};}</script>
 <script src="{{ asset('js/mapsolve.js') }}"></script>
 
 {% endblock %}
