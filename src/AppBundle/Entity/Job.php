@@ -214,6 +214,7 @@ class Job
     {
         $this->mapjobs = new \Doctrine\Common\Collections\ArrayCollection();
         $this->reducejobs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->lastrequested = new \DateTime();
     }
 
     /**

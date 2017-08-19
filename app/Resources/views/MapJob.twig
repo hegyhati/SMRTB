@@ -18,14 +18,11 @@
 {{mapdata.mapjobid}}
 
 <h4>InputChunk</h4>
-<textarea >
-{{mapdata.chunk}}
-</textarea>
+<textarea id="chunk">{{mapdata.chunk}}</textarea>
 
 {% endblock %}
 
 
 {% block javascripts %}
-<script>{{job.getMapFunction()}}</script>
-<script>{{job.getMapFunction()}}</script>
+<script>{{job.getMapFunction()|raw}}</script>
 {% endblock %}
