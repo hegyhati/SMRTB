@@ -50,8 +50,9 @@ class Job
     const editing = 0;
     const finalized = 1;
     const runningMap = 2;
-    const runningReduce = 3;
-    const finished =4;
+    const shuffling = 3;
+    const runningReduce = 4;
+    const finished =5;
 	/**
 	 * @ORM\Column(type="integer")
 	 */ 
@@ -67,6 +68,11 @@ class Job
 	 * @ORM\Column(type="text")
 	 */ 
 	protected $reduceFunction = "";
+
+    /** 
+     * @ORM\Column(type="datetime",  options={"default": 0}) 
+     */
+    private $lastrequested;
 
     /**
      * Get id
@@ -316,8 +322,10 @@ class Job
             case 2: 
                 return "running Map jobs"; break;
             case 3:
+                return "shuffling intermediate pairs"; break;
+            case 4:
                 return "running Reduce jobs"; break;
-            case 4: 
+            case 5: 
                 return "finished"; break;
         }    
     }
