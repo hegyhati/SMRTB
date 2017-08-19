@@ -37,7 +37,7 @@
         <th>ID</th>
         <th>Chunk</th>
         <th>Worker</th>
-        <th>Result</th>
+        <th>Finished</th>
     </tr>
     {% for mjob in job.mapjobs %}
     <tr>
@@ -46,8 +46,50 @@
         <td>{{mjob.getWorker()}}</td>
         <td>{{mjob.getFinished()}}</td>
     </tr>
-    {% endfor %}
-    
+    {% endfor %}    
+</table>
+
+
+<h3>Intermediate Pairs</h3>
+<table border=1>
+    <tr>
+        <th>ID</th>
+        <th>Mapjob</th>
+        <th>Key</th>
+        <th>Value</th>
+    </tr>
+    {% for pair in job.intermediatepairs %}
+    <tr>
+        <td>{{pair.getId()}}</td>
+        <td>{{pair.getMapJob().getInputChunk()}}</td>
+        <td>{{pair.getKey()}}</td>
+        <td>{{pair.getValue()}}</td>
+    </tr>
+    {% endfor %}    
+</table>
+
+<h3>Reduce jobs</h3>
+<table border=1>
+    <tr>
+        <th>ID</th>
+        <th>Key</th>
+        <th>Values</th>
+        <th>Worker</th>
+        <th>Finished</th>
+    </tr>
+    {% for rjob in job.reducejobs %}
+    <tr>
+        <td>{{rjob.getId()}}</td>
+        <td>{{rjob.getKey()}}</td>
+        <td>{
+        {% for pair in rjob.getIntermediatepairs() %}
+            {{ pair.getValue() }}
+        {% endfor %}
+        }</td>
+        <td>{{rjob.getWorker()}}</td>
+        <td>{{rjob.getFinished()}}</td>
+    </tr>
+    {% endfor %}    
 </table>
 
 {% endblock %}

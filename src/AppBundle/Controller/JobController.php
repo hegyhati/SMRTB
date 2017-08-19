@@ -105,10 +105,13 @@ class JobController extends Controller
                         $reducejob  = new ReduceJob();
                         $reducejob
                             ->setJob($job)
-                            ->setFinished(false);
+                            ->setFinished(false)
+                            ->setKey($key);
                         foreach($intermediatepairs as $pair){
-                            if($pair->getKey()==$key)
+                            if($pair->getKey()==$key) {
                                 $reducejob->addIntermediatepair($pair);
+                                $pair->setReducejob($reducejob);
+                            }
                         }
                         $em->persist($reducejob);
                     }

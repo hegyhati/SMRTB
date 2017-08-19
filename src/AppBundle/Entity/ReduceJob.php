@@ -43,6 +43,11 @@ class ReduceJob
     /**
 	 * @ORM\Column(type="text")
 	 */ 
+	protected $key = "";
+
+    /**
+	 * @ORM\Column(type="text")
+	 */ 
 	protected $result = "";
     
 	
@@ -192,5 +197,29 @@ class ReduceJob
     public function getIntermediatepairs()
     {
         return $this->intermediatepairs;
+    }
+
+    /**
+     * Set key
+     *
+     * @param string $key
+     *
+     * @return ReduceJob
+     */
+    public function setKey($key)
+    {
+        $this->key = $key;
+
+        return $this;
+    }
+
+    /**
+     * Get key
+     *
+     * @return string
+     */
+    public function getKey()
+    {
+        return $this->key;
     }
 }
