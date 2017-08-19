@@ -120,6 +120,20 @@ class JobController extends Controller
                     $em->flush();
                 
             case 4: // Reduce jobs running
+                $reducerepository=$this->getDoctrine()->getRepository('AppBundle:ReduceJob');
+                $reducejob = $reducerepository->findOneBy(array(
+                    'finished' => false, 
+                    'worker' => ""
+                ));
+                if($reducejob) {
+                    $data['reducejobid'] = $reducejob -> getId();
+                    $data['reducekey'] = $reducejob -> getKey();
+                    $data['values'] = $reducejob -> getValues();
+                    break;
+                } else {
+                    $job->setState(5);
+                    $em->flush();                    
+                }
                 break;
         }
         $data['jobid'] = $id;
@@ -151,8 +165,10 @@ class JobController extends Controller
         if($jobdata['state'] == 2) return $this->render(
             'MapJob.twig', 
             array('job' => $job,'mapdata' => $jobdata));
-        
-        else return new JsonResponse($jobdata);
+        else if($jobdata['state'] == 4) return $this->render(
+            'ReduceJob.twig', 
+            array('job' => $job,'reducedata' => $jobdata));
+        else return $this->redirectToRoute('jobdetails', array('id' => $id));
     }
     
     /**
@@ -185,6 +201,32 @@ class JobController extends Controller
         $mapjob
             ->setFinished(true)
             ->setWorker($worker);
+        $em->flush();
+        
+        return new JsonResponse($this->mapreduceJSON($jobid));
+    }
+    
+    /**
+    * @Route("/api/reduceresult/{jobid}/{reducejobid}", name="reduceresultAPI")
+    * @Method("POST")
+    */
+    public function reduceResultAction($jobid,$reducejobid)
+    {   
+        $em=$this->getDoctrine()->getManager();
+        $jrepository=$this->getDoctrine()->getRepository('AppBundle:Job');   
+        $rrepository=$this->getDoctrine()->getRepository('AppBundle:ReduceJob');
+        
+        $request = Request::createFromGlobals();
+        $json = json_decode($request->getContent());
+        
+        $worker = $json->worker;
+        $result = $json->result;
+        $job = $jrepository->findOneById($jobid);
+        $reducejob = $rrepository->findOneById($reducejobid);
+        $reducejob
+            ->setFinished(true)
+            ->setWorker($worker)
+            ->setResult($result->value);
         $em->flush();
         
         return new JsonResponse($this->mapreduceJSON($jobid));

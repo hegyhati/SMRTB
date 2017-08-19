@@ -62,7 +62,7 @@ class NewJob extends ContainerAwareCommand
                 ->setInputFile("adf,sdfg,gs,rg,sgfg,sgs,sfd,g,fdg,gerer,gsdfserg")
                 ->setState(1)
                 ->setMapFunction("function map(inputchunk){var mapoutput=[];for(i=0;i<inputchunk.length;i++) mapoutput.push({key: inputchunk[i], value: 1});return mapoutput;}")
-                ->setReduceFunction("function reduce(key, array){var sum=0; for(i in array) sum+=array[i]; return {key: key, value: sum};}")
+                ->setReduceFunction("function reduce(key, array){var sum=0; for(i in array) sum+=parseInt(array[i]); return {key: key, value: sum};}")
                 ;
             $em->persist($jobabc);
         }

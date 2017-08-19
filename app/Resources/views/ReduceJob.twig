@@ -1,0 +1,42 @@
+{% extends 'main.twig' %}
+
+{% block title %}Reducejob ({{reducedata.reducejobid}}) for {{job.getName()}}{% endblock %}
+
+{% block body %}
+<h1>Reducejob ({{reducedata.reducejobid}}) for {{job.getName()}}</h1>
+
+<h3>Job info</h3>
+<ul>
+    <li><b>Name: </b> {{job.getName()}}</li>
+    <li><b>Author: </b>{{job.getAuthor()}}</li>
+</ul>
+
+
+
+<h3>ReduceJob data</h3>
+<h4>ID</h4>
+
+{{reducedata.reducejobid}}
+
+<h4>Key</h4>
+
+<textfield>{{reducedata.reducekey}}<textfield>
+
+<h4>Values</h4>
+<textarea id="values">{{reducedata.values|join('|')}}</textarea>
+
+<br />
+<button type="button" onclick="reducesolve()">Solve</button>
+
+{% endblock %}
+
+
+{% block javascripts %}
+<script>{{job.getReduceFunction()|raw}}</script>
+<script>function getJobId(){return {{job.getId()}};}</script>
+<script>function getReduceJobId(){return {{reducedata.reducejobid}};}</script>
+<script>function getReduceKey(){return '{{reducedata.reducekey}}';}</script>
+<script src="{{ asset('js/reducesolve.js') }}"></script>
+
+
+{% endblock %}

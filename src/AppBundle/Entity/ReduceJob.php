@@ -29,6 +29,15 @@ class ReduceJob
      * @ORM\OneToMany(targetEntity="IntermediatePair", mappedBy="reducejob")
      */
     private $intermediatepairs;
+
+    public function getValues()
+    {
+        $values = array();
+        foreach($this->intermediatepairs as $pair) {
+            $values[]=$pair->getValue();
+        }
+        return $values;
+    }
     
 	/**
 	 * @ORM\Column(type="boolean")

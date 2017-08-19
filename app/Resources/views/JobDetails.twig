@@ -81,11 +81,7 @@
     <tr>
         <td>{{rjob.getId()}}</td>
         <td>{{rjob.getKey()}}</td>
-        <td>{
-        {% for pair in rjob.getIntermediatepairs() %}
-            {{ pair.getValue() }}
-        {% endfor %}
-        }</td>
+        <td>{{rjob.getValues()|join('|')}}</td>
         <td>{{rjob.getWorker()}}</td>
         <td>{{rjob.getFinished()}}</td>
     </tr>
