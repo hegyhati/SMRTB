@@ -20,6 +20,12 @@ class IntermediatePair
 	protected $id;
 	
     /**
+     * @ORM\ManyToOne(targetEntity="Job", inversedBy="intermediatepairs")
+     * @ORM\JoinColumn(name="job_id", referencedColumnName="id")
+     */
+    private $job;
+
+    /**
      * @ORM\ManyToOne(targetEntity="MapJob", inversedBy="intermediatepairs")
      * @ORM\JoinColumn(name="mapjob_id", referencedColumnName="id")
      */
@@ -146,5 +152,29 @@ class IntermediatePair
     public function getReducejob()
     {
         return $this->reducejob;
+    }
+
+    /**
+     * Set job
+     *
+     * @param \AppBundle\Entity\Job $job
+     *
+     * @return IntermediatePair
+     */
+    public function setJob(\AppBundle\Entity\Job $job = null)
+    {
+        $this->job = $job;
+
+        return $this;
+    }
+
+    /**
+     * Get job
+     *
+     * @return \AppBundle\Entity\Job
+     */
+    public function getJob()
+    {
+        return $this->job;
     }
 }

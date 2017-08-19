@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Job;
 use AppBundle\Entity\MapJob;
 use AppBundle\Entity\IntermediatePair;
+use AppBundle\Entity\ReduceJob;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -90,10 +91,31 @@ class JobController extends Controller
                     break;
                 } else {
                     $job->setState(3);
-                    $em->flush();
-                    // generate Reduce jobs
-                    $job->setState(4);
+                    $em->flush();                    
                 }
+            case 3:    
+                    $intermediatepairs = $job->getIntermediatepairs();
+                    $keys = [];
+                    foreach($intermediatepairs as $pair){
+                        $keys[]=$pair->getKey();
+                    }
+                    $keys = array_unique($keys);
+                    
+                    foreach($keys as $keykey => $key) {
+                        $reducejob  = new ReduceJob();
+                        $reducejob
+                            ->setJob($job)
+                            ->setFinished(false);
+                        foreach($intermediatepairs as $pair){
+                            if($pair->getKey()==$key)
+                                $reducejob->addIntermediatepair($pair);
+                        }
+                        $em->persist($reducejob);
+                    }
+                    $em->flush();       
+                    $job->setState(4);
+                    $em->flush();
+                
             case 4: // Reduce jobs running
                 break;
         }
@@ -127,7 +149,7 @@ class JobController extends Controller
             'MapJob.twig', 
             array('job' => $job,'mapdata' => $jobdata));
         
-        else return new Response($jobdata);
+        else return new JsonResponse($jobdata);
     }
     
     /**
@@ -151,6 +173,7 @@ class JobController extends Controller
         foreach ($results as $result) {
             $pair = new IntermediatePair();
             $pair
+                ->setJob($job)
                 ->setMapjob($mapjob)
                 ->setKey($result->key)
                 ->setValue($result->value);

@@ -9,5 +9,6 @@ function mapsolve() {
     xhr.send(JSON.stringify(json));
     xhr.onloadend = function () {
         console.log(xhr.response);
+        location.reload();
     };
 }

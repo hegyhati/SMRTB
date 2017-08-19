@@ -35,6 +35,11 @@ class Job
      */
     private $reducejobs;
     
+    /**
+     * @ORM\OneToMany(targetEntity="IntermediatePair", mappedBy="job")
+     */
+    private $intermediatepairs;
+    
     
     /**
 	 * @ORM\Column(type="text")
@@ -330,6 +335,62 @@ class Job
                 return "finished"; break;
         }    
     }
+
+    /**
+     * Set lastrequested
+     *
+     * @param \DateTime $lastrequested
+     *
+     * @return Job
+     */
+    public function setLastrequested($lastrequested)
+    {
+        $this->lastrequested = $lastrequested;
+
+        return $this;
+    }
+
+    /**
+     * Get lastrequested
+     *
+     * @return \DateTime
+     */
+    public function getLastrequested()
+    {
+        return $this->lastrequested;
+    }
+
+    /**
+     * Add intermediatepair
+     *
+     * @param \AppBundle\Entity\IntermediatePair $intermediatepair
+     *
+     * @return Job
+     */
+    public function addIntermediatepair(\AppBundle\Entity\IntermediatePair $intermediatepair)
+    {
+        $this->intermediatepairs[] = $intermediatepair;
+
+        return $this;
+    }
+
+    /**
+     * Remove intermediatepair
+     *
+     * @param \AppBundle\Entity\IntermediatePair $intermediatepair
+     */
+    public function removeIntermediatepair(\AppBundle\Entity\IntermediatePair $intermediatepair)
+    {
+        $this->intermediatepairs->removeElement($intermediatepair);
+    }
+
+    /**
+     * Get intermediatepairs
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getIntermediatepairs()
+    {
+        return $this->intermediatepairs;
+    }
 }
-
-
