@@ -2,6 +2,14 @@
 
 {% block title %}SMRTB workbench{% endblock %}
 
+
+{% block stylesheetsandscripts %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{% endblock %}
+
+
 {% block body %}
 
 <div class="row">
@@ -16,7 +24,7 @@
             <div class="panel-heading">Jobs under editing</div>
             <div class="panel-body">
                 {% for j in jobs if j.getState() == 0%}
-                    <button type="button" class="btn" jobid={{j.getId()}}>{{j.getName()}}</button>
+                    <a href="{{ path('complex', {'jobid': j.getId()}) }}" role="button" class="btn" jobid={{j.getId()}}>{{j.getName()}}</a>
                 {% endfor %}
             </div>
         </div>  
@@ -26,7 +34,7 @@
             <div class="panel-heading">Jobs finalized, ready to run</div>
             <div class="panel-body">
                 {% for j in jobs if j.getState() == 1%}
-                    <button type="button" class="btn btn-success" jobid={{j.getId()}}>{{j.getName()}}</button>
+                    <a href="{{ path('complex', {'jobid': j.getId()}) }}" role="button" class="btn btn-success" jobid={{j.getId()}}>{{j.getName()}}</a>
                 {% endfor %}
             </div>
         </div> 
@@ -40,7 +48,7 @@
                     <div class="panel-heading">Map</div>
                     <div class="panel-body">
                         {% for j in jobs if j.getState() == 2%}
-                            <button type="button" class="btn btn-primary" jobid={{j.getId()}}>{{j.getName()}}</button>
+                            <a href="{{ path('complex', {'jobid': j.getId()}) }}" role="button" class="btn btn-primary" jobid={{j.getId()}}>{{j.getName()}}</a>
                         {% endfor %}
                     </div>
                 </div>
@@ -49,7 +57,7 @@
                     <div class="panel-heading">Shuffle</div>
                     <div class="panel-body">
                         {% for j in jobs if j.getState() == 3%}
-                            <button type="button" class="btn btn-warning" jobid={{j.getId()}}>{{j.getName()}}</button>
+                            <a href="{{ path('complex', {'jobid': j.getId()}) }}" role="button" class="btn btn-warning" jobid={{j.getId()}}>{{j.getName()}}</a>
                         {% endfor %}
                     </div>
                 </div>
@@ -58,7 +66,7 @@
                     <div class="panel-heading">Reduce</div>
                     <div class="panel-body">
                         {% for j in jobs if j.getState() == 4%}
-                            <button type="button" class="btn btn-primary" jobid={{j.getId()}}>{{j.getName()}}</button>
+                            <a href="{{ path('complex', {'jobid': j.getId()}) }}" role="button" class="btn btn-primary" jobid={{j.getId()}}>{{j.getName()}}</a>
                         {% endfor %}
                     </div>
                 </div>
@@ -70,7 +78,7 @@
             <div class="panel-heading">Finished jobs</div>
             <div class="panel-body">
                 {% for j in jobs if j.getState() == 5%}
-                    <button type="button" class="btn btn-success" jobid={{j.getId()}}>{{j.getName()}}</button>
+                    <a href="{{ path('complex', {'jobid': j.getId()}) }}" role="button" class="btn btn-success" jobid={{j.getId()}}>{{j.getName()}}</a>
                 {% endfor %}
             </div>
         </div> 
@@ -85,25 +93,86 @@
 
 
 
-    
-
-
-
-
-
-
-
 
 
 
     <div class="col-sm-4" margin=10>        
         <h1>Job details {% if job %} - <strong>{{job.getName()}}</strong>{% endif %}</h1>
         {% if job %}
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+                <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
+                <li><a data-toggle="tab" href="#scripts">Map/Reduce scripts</a></li>
+                <li><a data-toggle="tab" href="#input">Input</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="overview" class="tab-pane fade in active">
+                    <hr />
+                    <div class="alert alert-info"><b>Author</b>: {{ job.getAuthor() }} </div>
+                    <hr />
+                    <div 
+                        {% if job.getState()==0 %} class="alert alert-warning"> {% endif %}
+                        {% if job.getState()==1 %} class="alert alert-success"> {% endif %}
+                        {% if job.getState()==2 %} class="alert alert-info"> {% endif %}
+                        {% if job.getState()==3 %} class="alert alert-warning"> {% endif %}
+                        {% if job.getState()==4 %} class="alert alert-info"> {% endif %}
+                        {% if job.getState()==5 %} class="alert alert-success"> {% endif %}
+                        <b>Status</b>: {{ job.getStringState() }} 
+                    </div>
+                    <hr />
+                    <div class="panel panel-default">
+                        <div class="panel-body">Workers</div>
+                        <div class="panel-footer"><div class="alert alert-danger">Workers will be displayed here.</div> </div>
+                    </div>
+                    <hr />
+                    <h2>Map</h2>
+                    {% if job.getState() < 2 %}
+                        <div class="alert alert-info">Job not yet started</div>
+                    {% else %}
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped {% if job.getState()==2 %}active{% endif %}" role="progressbar" aria-valuenow="{{job.getMapDone()}}" aria-valuemin="0" aria-valuemax="{{job.getMapCount()}}" style="width:{{job.getMapProgress()}}%">
+                            {{job.getMapDone()}}/{{job.getMapCount()}}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <h2>Reduce</h2>
+                    {% if job.getState() < 2 %}
+                        <div class="alert alert-info">Job not yet started</div>
+                    {% else %}
+                        {% if job.getState() < 4 %}
+                            <div class="alert alert-info">(key,value) pairs not yet generated, or collected</div>
+                        {% else %}
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped {% if job.getState()==4 %}active{% endif %}" role="progressbar" aria-valuenow="{{job.getReduceDone()}}" aria-valuemin="0" aria-valuemax="{{job.getReduceCount()}}" style="width:{{job.getReduceProgress()}}%">
+                                {{job.getReduceDone()}}/{{job.getReduceCount()}}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    
+                </div>
+                <div id="scripts" class="tab-pane fade">
+                    <div class="alert alert-danger">Map and reduce scripts will be displayed here.</div>    
+                </div>
+                <div id="input" class="tab-pane fade">
+                    <div class="alert alert-danger">Input will be displayed here.</div>
+                </div>
+            </div>
+        
+        
         {% else %}
             <div class="alert alert-info">No job selected yet, click/tap one on the left.</div>
         {% endif %}
         
     </div>
+
+
+
+
+
+
+
+
 
 
     <div class="col-sm-4" margin=10>

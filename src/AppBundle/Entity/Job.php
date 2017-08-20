@@ -30,10 +30,43 @@ class Job
      */
     private $mapjobs;
 
+    public function getMapCount()
+    {
+        return $this->mapjobs->count();
+    }
+    
+    public function getMapDone()
+    {
+        return $this->mapjobs->filter(function ($mj){return $mj->getFinished();})->count();
+    }
+    
+    public function getMapProgress()
+    {
+        if ($this->getMapCount() == 0) return 0;
+        else return 100 * $this->getMapDone() / $this->getMapCount();
+    }
+    
+    
     /**
      * @ORM\OneToMany(targetEntity="ReduceJob", mappedBy="job")
      */
     private $reducejobs;
+    
+    public function getReduceCount()
+    {
+        return $this->reducejobs->count();
+    }
+    
+    public function getReduceDone()
+    {
+        return $this->reducejobs->filter(function ($rj){return $rj->getFinished();})->count();
+    }
+    
+    public function getReduceProgress()
+    {
+        if ($this->getReduceCount() == 0) return 0;
+        else return 100 * $this->getReduceDone() / $this->getReduceCount();
+    }
     
     /**
      * @ORM\OneToMany(targetEntity="IntermediatePair", mappedBy="job")
@@ -255,7 +288,8 @@ class Job
     {
         return $this->mapjobs;
     }
-
+    
+   
     /**
      * Add reducejob
      *
