@@ -68,6 +68,32 @@ class Job
         else return 100 * $this->getReduceDone() / $this->getReduceCount();
     }
     
+    
+    function getStatistics(){
+        $data=[];
+        $stats=[];
+        foreach($this->mapjobs as $mapjob) 
+            if(array_key_exists($mapjob->getWorker(),$data))
+                $data[$mapjob->getWorker()]['map']++;
+            else
+                $data[$mapjob->getWorker()]=array('map'=>1,'reduce'=>0);
+        foreach($this->reducejobs as $reducejob) 
+            if(array_key_exists($reducejob->getWorker(),$data))
+                $data[$reducejob->getWorker()]['reduce']++;
+            else
+                $data[$reducejob->getWorker()]=array('map'=>0,'reduce'=>1);
+                
+        foreach($data as $worker => $mr)
+            $stats[]=array('name'=>$worker, 'mapjobs' => $mr['map'], 'reducejobs' => $mr['reduce']);
+        return $stats;
+    }
+    
+    function getResults(){
+        $results=[];
+        foreach($this->reducejobs as $reducejob)
+            $results[]=array('key'=>$reducejob->getKey(),'value'=>$reducejob->getResult(),'paircount' => $reducejob->getIntermediatepairs()->count());
+        return $results;
+    }
     /**
      * @ORM\OneToMany(targetEntity="IntermediatePair", mappedBy="job")
      */
