@@ -48,7 +48,7 @@
             {% elseif job.getState()==1 %} 
                 <div class="alert alert-danger">Join/Start project button will be displayed here</div>
             {% elseif job.getState()<6 %} 
-                <div class="alert alert-danger">Join project button / work log console will be displayed here</div>
+                {% include 'ComplexJobContribution.twig'%}
             {% else %}
                 <div class="alert alert-danger">Worker statistics will be displayed here</div>
             {% endif %}
