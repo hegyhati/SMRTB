@@ -16,7 +16,7 @@ class ComplexController extends Controller
 {
     
     /**
-    * @Route("/complex/{jobid}", name="complex", defaults={"jobid"= null})
+    * @Route("/complex/{jobid}", name="complex", defaults={"jobid"= null}, requirements={"jobid": "\d+"})
     * @Method("GET")
     */
     public function complexAction($jobid)
@@ -99,6 +99,48 @@ class ComplexController extends Controller
         return $this->redirectToRoute('complex', array('jobid' => $jobid));
     }
     
+
+    /**
+    * @Route("/complex/update/{jobid}", name="complexUpdate", defaults={"jobid": "all"})
+    * @Method("GET")
+    */
+    public function complexJobUpdateAction($jobid)
+    {        
+        $em=$this->getDoctrine()->getManager();
+		$repository=$this->getDoctrine()->getRepository('AppBundle:Job');
+		
+        $dataa=[];
+        
+        if($jobid != "all") {
+            $job = $repository->findOneById($jobid);
+            $data['id']=$job->getId();
+            $data['name']=$job->getName();
+            $data['state']=$job->getState();
+            $data['mapcount']=$job->getMapCount();
+            $data['mapdone']=$job->getMapDone();
+            $data['mapprogress']=$job->getMapProgress();
+            $data['reducecount']=$job->getReduceCount();
+            $data['reducedone']=$job->getReduceDone();
+            $data['reduceprogress']=$job->getReduceProgress();
+            $dataa=$data;
+        } /*else {
+            $dataa=[];
+            $jobs=$repository->findAll($jobid);
+            foreach ($jobs as $job) {
+                $data['id']=$job->getId();
+                $data['name']=$job->getName();
+                $data['state']=$job->getState();
+                $data['mapcount']=$job->getMapCount();
+                $data['mapdone']=$job->getMapDone();
+                $data['mapprogress']=$job->getMapProgress();
+                $data['reducecount']=$job->getReduceCount();
+                $data['reducedone']=$job->getReduceDone();
+                $data['reduceprogress']=$job->getReduceProgress();
+                $dataa[]=$dataa;
+            }
+        }*/
+        return new JsonResponse($dataa);
+    }
 
    
 }

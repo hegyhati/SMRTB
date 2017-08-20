@@ -25,27 +25,17 @@
         </div>
         <hr />
         <h2>Map</h2>
-        {% if job.getState() < 2 %}
-            <div class="alert alert-info">Project not yet started</div>
-        {% else %}
-            <div class="progress">
-                <div class="progress-bar progress-bar-striped {% if job.getState()==2 %}active{% endif %}" role="progressbar" aria-valuenow="{{job.getMapDone()}}" aria-valuemin="0" aria-valuemax="{{job.getMapCount()}}" style="width:{{job.getMapProgress()}}%">
-                {{job.getMapDone()}}/{{job.getMapCount()}}
-                </div>
+        <div class="progress">
+            <div id="map-progressbar" class="progress-bar progress-bar-striped active role="progressbar" aria-valuenow="{{job.getMapDone()}}" aria-valuemin="0" aria-valuemax="{{job.getMapCount()}}" style="width:{{job.getMapProgress()}}%">
+            {{job.getMapDone()}}/{{job.getMapCount()}}
             </div>
-        {% endif %}
+        </div>
         <h2>Reduce</h2>
-        {% if job.getState() < 2 %}
-            <div class="alert alert-info">Project not yet started</div>
-        {% elseif job.getState() < 4 %}
-            <div class="alert alert-info">(key,value) pairs not yet generated, or collected</div>
-        {% else %}
-            <div class="progress">
-                <div class="progress-bar progress-bar-striped {% if job.getState()==4 %}active{% endif %}" role="progressbar" aria-valuenow="{{job.getReduceDone()}}" aria-valuemin="0" aria-valuemax="{{job.getReduceCount()}}" style="width:{{job.getReduceProgress()}}%">
-                {{job.getReduceDone()}}/{{job.getReduceCount()}}
-                </div>
+        <div class="progress">
+            <div id="reduce-progressbar" class="progress-bar progress-bar-striped active role="progressbar" aria-valuenow="{{job.getReduceDone()}}" aria-valuemin="0" aria-valuemax="{{job.getReduceCount()}}" style="width:{{job.getReduceProgress()}}%">
+            {{job.getReduceDone()}}/{{job.getReduceCount()}}
             </div>
-        {% endif %}
+        </div>
         
     </div>
     <div id="scripts" class="tab-pane fade">
@@ -58,6 +48,12 @@
         <hr />
     </div>
     <div id="input" class="tab-pane fade">
-        <div class="alert alert-danger">Input will be displayed here.</div>
+        <textarea disabled  rows="40"  class="form-control" name="reducefunction" style="font-family:monospace;">{{job.getInputFile()}}</textarea>
     </div>
 </div>
+
+{% block javascripts %}
+<script>function getJobId(){return {{job.getId()}};}</script>
+<script src="{{ asset('js/complexupdate.js') }}"></script>
+<script>document.onload=update()</script>
+{% endblock %}
