@@ -36,9 +36,9 @@
     {% if job %}
         <div class="col-sm-4">
             {% if job.getState()==0 %}            
-                <div class="alert alert-danger">Project editor will display here</div>
+                {% include 'ComplexJobEdit.twig'%}
             {% else %} 
-                {% include 'ComplexJobDetails.twig' with {'job': job} %}            
+                {% include 'ComplexJobDetails.twig'%}            
             {% endif %}
         </div>
         
@@ -58,7 +58,7 @@
     {% else %}
         <div class="col-sm-2"></div>
         <div class="col-sm-4"> 
-            <div class="alert alert-info">No project selected yet, click/tap one on the left, or add a new one.</div>
+            <div class="alert alert-info">No project selected yet, click/tap one on the left, or <a href="{{ path('complexNewJob') }}">create a new one</a>.</div>
         </div>
         <div class="col-sm-2"></div>
     {% endif %}

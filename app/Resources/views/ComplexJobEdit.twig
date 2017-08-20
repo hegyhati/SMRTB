@@ -1,0 +1,24 @@
+<h1>Editing project - <strong id="jobnametitle">{{job.getName()}}</strong></h1>
+
+<form action="{{ path('complexSaveJob', {'jobid': job.getId()}) }}" method="POST">
+    <div class="form-group">
+        <label for="name">Project name:</label>
+        <input class="form-control" name='name' value="{{job.getName()}}" />
+    </div>
+    <div class="form-group">
+        <label for="mapfunction">Map function:</label>
+        <textarea rows="10"  class="form-control" name="mapfunction">{{job.getMapFunction()}}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="reducefunction">Reduce function:</label>
+        <textarea rows="10"  class="form-control" name="reducefunction">{{job.getReduceFunction()}}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="input">Input:</label>
+        <textarea rows="10"  class="form-control" name="input">{{job.getInputFile()}}</textarea>
+    </div>
+    
+    
+    <button type="submit" class="btn btn-default">Save</button>
+    <button type="reset" class="btn btn-default">Reset</button>
+</form>
