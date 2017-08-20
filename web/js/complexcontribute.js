@@ -14,7 +14,7 @@ function interpretjob(data) {
     } else if (data.state==2) {
         console.log("Map job received");
         var table = document.getElementById("mapjobtable");
-        var row = table.insertRow(-1);
+        var row = table.insertRow(0);
         row.id="map-"+data.mapjobid;
         row.insertCell(0).innerHTML=data.mapjobid;
         row.insertCell(1).innerHTML=data.chunk;
@@ -25,7 +25,7 @@ function interpretjob(data) {
     } else if (data.state==4) {
         console.log("Reduce job received");
         var table = document.getElementById("reducejobtable");
-        var row = table.insertRow(-1);
+        var row = table.insertRow(0);
         row.id="reduce-"+data.reducejobid;
         row.insertCell(0).innerHTML=data.reducejobid;
         row.insertCell(1).innerHTML=data.reducekey;

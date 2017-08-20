@@ -4,18 +4,6 @@
     <a role="button" href="{{ path('complexRunJob', {'jobid': job.getId()}) }}" class="btn btn-primary">Start solving Project</a>
 {% endif %}
 
-<table class="table table-hover" id="mapjobtable">
-    <caption>Map jobs</caption>
-    <thead>
-      <tr>
-        <th>id</th>
-        <th>Inputchunk</th>
-        <th>Restult</th>
-      </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
 
 <table class="table table-hover" id="reducejobtable">
     <caption>Reduce jobs</caption>
@@ -30,6 +18,21 @@
     <tbody>
     </tbody>
 </table>
+
+<table class="table table-hover" id="mapjobtable">
+    <caption>Map jobs</caption>
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>Inputchunk</th>
+        <th>Restult</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+
 
 {% block javascripts %}
 <script>{{job.getMapFunction()|raw}}</script>

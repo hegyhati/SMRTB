@@ -85,7 +85,10 @@ class JobController extends Controller
                     'finished' => false, 
                     'worker' => ""
                 ));
+                if(!$mapjob) $mapjob = $maprepository->findOneBy(array('finished' => false));
                 if($mapjob) {
+                    $mapjob->setWorker("in progress"); 
+                    $em->flush();
                     $data['mapjobid'] = $mapjob -> getId();
                     $data['chunk'] = $mapjob -> getInputchunk();
                     break;
@@ -125,10 +128,12 @@ class JobController extends Controller
                     'finished' => false, 
                     'worker' => ""
                 ));
+                if(! $reducejob) $reducejob = $reducerepository->findOneBy(array('finished' => false));
                 if($reducejob) {
                     $data['reducejobid'] = $reducejob -> getId();
                     $data['reducekey'] = $reducejob -> getKey();
                     $data['values'] = $reducejob -> getValues();
+                    $reducejob->setWorker('in progress');
                     break;
                 } else {
                     $job->setState(5);
@@ -177,31 +182,34 @@ class JobController extends Controller
     */
     public function mapResultAction($jobid,$mapjobid)
     {   
-        $em=$this->getDoctrine()->getManager();
-        $jrepository=$this->getDoctrine()->getRepository('AppBundle:Job');   
-        $mrepository=$this->getDoctrine()->getRepository('AppBundle:MapJob');
-        $prepository=$this->getDoctrine()->getRepository('AppBundle:IntermediatePair');  
+        $em=$this->getDoctrine()->getManager();   
+        $mrepository=$this->getDoctrine()->getRepository('AppBundle:MapJob');   
         
-        $request = Request::createFromGlobals();
-        $json = json_decode($request->getContent());
-        
-        $worker = $json->worker;
-        $results = $json->results;
-        $job = $jrepository->findOneById($jobid);
         $mapjob = $mrepository->findOneById($mapjobid);
-        foreach ($results as $result) {
-            $pair = new IntermediatePair();
-            $pair
-                ->setJob($job)
-                ->setMapjob($mapjob)
-                ->setKey($result->key)
-                ->setValue($result->value);
-            $em->persist($pair);
+        
+        if(!$mapjob->getFinished()) {            
+            $prepository=$this->getDoctrine()->getRepository('AppBundle:IntermediatePair');
+            $jrepository=$this->getDoctrine()->getRepository('AppBundle:Job');
+            $request = Request::createFromGlobals();
+            $json = json_decode($request->getContent());
+            
+            $worker = $this->container->get('request_stack')->getCurrentRequest()->getClientIp();
+            $results = $json->results;
+            $job = $jrepository->findOneById($jobid);
+            foreach ($results as $result) {
+                $pair = new IntermediatePair();
+                $pair
+                    ->setJob($job)
+                    ->setMapjob($mapjob)
+                    ->setKey($result->key)
+                    ->setValue($result->value);
+                $em->persist($pair);
+            }
+            $mapjob
+                ->setFinished(true)
+                ->setWorker($worker);
+            $em->flush();
         }
-        $mapjob
-            ->setFinished(true)
-            ->setWorker($worker);
-        $em->flush();
         
         return new JsonResponse($this->mapreduceJSON($jobid));
     }
@@ -213,22 +221,25 @@ class JobController extends Controller
     public function reduceResultAction($jobid,$reducejobid)
     {   
         $em=$this->getDoctrine()->getManager();
-        $jrepository=$this->getDoctrine()->getRepository('AppBundle:Job');   
         $rrepository=$this->getDoctrine()->getRepository('AppBundle:ReduceJob');
-        
-        $request = Request::createFromGlobals();
-        $json = json_decode($request->getContent());
-        
-        $worker = $json->worker;
-        $result = $json->result;
-        $job = $jrepository->findOneById($jobid);
         $reducejob = $rrepository->findOneById($reducejobid);
-        $reducejob
-            ->setFinished(true)
-            ->setWorker($worker)
-            ->setResult($result->value);
-        $em->flush();
         
+        if(! $reducejob->getFinished()){           
+            $jrepository=$this->getDoctrine()->getRepository('AppBundle:Job');   
+            
+            $request = Request::createFromGlobals();
+            $json = json_decode($request->getContent());
+            
+            $worker = $this->container->get('request_stack')->getCurrentRequest()->getClientIp();
+            $result = $json->result;
+            $job = $jrepository->findOneById($jobid);
+            
+            $reducejob
+                ->setFinished(true)
+                ->setWorker($worker)
+                ->setResult($result->value);
+            $em->flush();
+        }
         return new JsonResponse($this->mapreduceJSON($jobid));
     }
     
