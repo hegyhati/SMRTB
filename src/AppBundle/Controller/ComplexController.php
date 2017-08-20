@@ -38,7 +38,12 @@ class ComplexController extends Controller
         $em=$this->getDoctrine()->getManager();
 		$repository=$this->getDoctrine()->getRepository('AppBundle:Job');
         $job = new Job();
-        $job -> setName("New Project");
+        $job 
+            -> setName("New Project")
+            -> setMapFunction("function map (inputchunk) {\n\tvar pairs=[];\n\n\t// do some code with pairs.push({key: foo, value: bar});\n\n\treturn pairs;\n}")
+            -> setReduceFunction("function reduce (key, values) {\n\tvar result;\n\n\t // do something to calculate result based on values\n\n\treturn {key: key, value: result};\n}")
+            -> setInputFile("Add,some,input,separated,with,commas");
+                
         $em->persist($job);
         $em->flush();        
 		 
