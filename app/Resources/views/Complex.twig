@@ -36,7 +36,7 @@
     {% if job %}
         <div class="col-sm-4">
             {% if job.getState()==0 %}            
-                <div class="alert alert-danger">Job editor will display here</div>
+                <div class="alert alert-danger">Project editor will display here</div>
             {% else %} 
                 {% include 'ComplexJobDetails.twig' with {'job': job} %}            
             {% endif %}
@@ -44,11 +44,11 @@
         
         <div class="col-sm-4">
             {% if job.getState()==0 %}            
-                <div class="alert alert-danger">Job editor testbed will be displayed here</div>
+                <div class="alert alert-danger">project editor testbed will be displayed here</div>
             {% elseif job.getState()==1 %} 
-                <div class="alert alert-danger">Join/Start job button will be displayed here</div>
+                <div class="alert alert-danger">Join/Start project button will be displayed here</div>
             {% elseif job.getState()<6 %} 
-                <div class="alert alert-danger">Join job button / work log console will be displayed here</div>
+                <div class="alert alert-danger">Join project button / work log console will be displayed here</div>
             {% else %}
                 <div class="alert alert-danger">Worker statistics will be displayed here</div>
             {% endif %}
@@ -58,7 +58,7 @@
     {% else %}
         <div class="col-sm-2"></div>
         <div class="col-sm-4"> 
-            <div class="alert alert-info">No job selected yet, click/tap one on the left, or add a new one.</div>
+            <div class="alert alert-info">No project selected yet, click/tap one on the left, or add a new one.</div>
         </div>
         <div class="col-sm-2"></div>
     {% endif %}

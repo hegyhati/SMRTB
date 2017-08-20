@@ -1,4 +1,4 @@
-<h1>Job details - <strong>{{job.getName()}}</strong></h1>
+<h1>Project details - <strong>{{job.getName()}}</strong></h1>
 <ul class="nav nav-tabs nav-justified" role="tablist">
     <li class="active"><a data-toggle="tab" href="#overview">Overview</a></li>
     <li><a data-toggle="tab" href="#scripts">Map/Reduce scripts</a></li>
@@ -26,7 +26,7 @@
         <hr />
         <h2>Map</h2>
         {% if job.getState() < 2 %}
-            <div class="alert alert-info">Job not yet started</div>
+            <div class="alert alert-info">Project not yet started</div>
         {% else %}
             <div class="progress">
                 <div class="progress-bar progress-bar-striped {% if job.getState()==2 %}active{% endif %}" role="progressbar" aria-valuenow="{{job.getMapDone()}}" aria-valuemin="0" aria-valuemax="{{job.getMapCount()}}" style="width:{{job.getMapProgress()}}%">
@@ -36,7 +36,7 @@
         {% endif %}
         <h2>Reduce</h2>
         {% if job.getState() < 2 %}
-            <div class="alert alert-info">Job not yet started</div>
+            <div class="alert alert-info">Project not yet started</div>
         {% elseif job.getState() < 4 %}
             <div class="alert alert-info">(key,value) pairs not yet generated, or collected</div>
         {% else %}

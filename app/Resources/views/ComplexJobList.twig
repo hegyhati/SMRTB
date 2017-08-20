@@ -1,8 +1,8 @@
-<h1><a href="{{ path('complex') }}">List of jobs</a></h1>
+<h1><a href="{{ path('complex') }}">List of projects</a></h1>
 
 {# STATE = 0 #}
 <div class="panel panel-default"> 
-    <div class="panel-heading">Jobs under editing</div>
+    <div class="panel-heading">Projects under editing</div>
     <div class="panel-body">
         {% for j in jobs if j.getState() == 0%}
             <a href="{{ path('complex', {'jobid': j.getId()}) }}" role="button" class="btn" jobid={{j.getId()}}>{{j.getName()}}</a>
@@ -12,7 +12,7 @@
 
 {# STATE = 1 #}
 <div class="panel panel-success"> 
-    <div class="panel-heading">Jobs finalized, ready to run</div>
+    <div class="panel-heading">Finalized projects, ready to run</div>
     <div class="panel-body">
         {% for j in jobs if j.getState() == 1%}
             <a href="{{ path('complex', {'jobid': j.getId()}) }}" role="button" class="btn btn-success" jobid={{j.getId()}}>{{j.getName()}}</a>
@@ -22,7 +22,7 @@
 
 {# STATE = 2-4 #}
 <div class="panel panel-primary"> 
-    <div class="panel-heading">Jobs running</div>
+    <div class="panel-heading">Projects running</div>
     <div class="panel-body">
         {# STATE = 2 #}
         <div class="panel panel-primary"> 
@@ -56,7 +56,7 @@
 
 {# STATE = 5 #}
 <div class="panel panel-success"> 
-    <div class="panel-heading">Finished jobs</div>
+    <div class="panel-heading">Finished projects</div>
     <div class="panel-body">
         {% for j in jobs if j.getState() == 5%}
             <a href="{{ path('complex', {'jobid': j.getId()}) }}" role="button" class="btn btn-success" jobid={{j.getId()}}>{{j.getName()}}</a>
