@@ -16,17 +16,17 @@ class ComplexController extends Controller
 {
     
     /**
-    * @Route("/complex/{jobid}/{workerstate}", name="complex", defaults={"jobid"= null, "workerstate"=null})
+    * @Route("/complex/{jobid}", name="complex", defaults={"jobid"= null})
     * @Method("GET")
     */
-    public function complexAction($jobid,$workerstate)
+    public function complexAction($jobid)
     {
         $em=$this->getDoctrine()->getManager();
 		$repository=$this->getDoctrine()->getRepository('AppBundle:Job');
 		$job=$repository->findOneById($jobid);
         $jobs=$repository->findAll();
 		 
-		return $this->render('Complex.twig', array('jobs'=> $jobs, 'job' => $job, 'workerstate' => $workerstate));
+		return $this->render('Complex.twig', array('jobs'=> $jobs, 'job' => $job));
     }
     
     /**
@@ -47,7 +47,7 @@ class ComplexController extends Controller
         $em->persist($job);
         $em->flush();        
 		 
-		return $this->redirectToRoute('complex', array('jobid' => $job->getId(), 'workerstate'=>'edit'));
+		return $this->redirectToRoute('complex', array('jobid' => $job->getId()));
     }
     
     /**
@@ -68,8 +68,37 @@ class ComplexController extends Controller
             -> setInputFile($request->request->get('input'));
         $em->flush();        
 		 
-		return $this->redirectToRoute('complex', array('jobid' => $jobid, 'workerstate'=>'edit'));
+		return $this->redirectToRoute('complex', array('jobid' => $jobid));
     }
+    
+    /**
+    * @Route("/complex/{jobid}/run", name="complexRunJob")
+    * @Method("GET")
+    */
+    public function complexRunJobAction($jobid)
+    {        
+        $em=$this->getDoctrine()->getManager();
+		$repository=$this->getDoctrine()->getRepository('AppBundle:Job');
+		$job=$repository->findOneById($jobid);
+        
+        if($job->getState() == 1) {
+            $chunks = explode(",", $job->getInputFile());
+            foreach($chunks as $chunk) {
+                $mapjob = new MapJob();
+                $mapjob
+                    ->setJob($job)
+                    ->setInputchunk($chunk)
+                    ->setFinished(false);  
+                $em->persist($mapjob);
+            }
+            $em->flush();
+            $job->setState(2);
+            $em->flush();
+        }
+		
+        return $this->redirectToRoute('complex', array('jobid' => $jobid));
+    }
+    
 
    
 }

@@ -45,8 +45,6 @@
         <div class="col-sm-4">
             {% if job.getState()==0 %}            
                 <div class="alert alert-danger">project editor testbed will be displayed here</div>
-            {% elseif job.getState()==1 %} 
-                <div class="alert alert-danger">Join/Start project button will be displayed here</div>
             {% elseif job.getState()<6 %} 
                 {% include 'ComplexJobContribution.twig'%}
             {% else %}

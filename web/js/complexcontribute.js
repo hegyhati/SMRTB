@@ -10,6 +10,7 @@ function interpretjob(data) {
     console.log(data);
     if(data.state<2) {
         console.log("Project not started, nothing to do");
+        setTimeout(contribute, 500);
     } else if (data.state==2) {
         console.log("Map job received");
         var table = document.getElementById("mapjobtable");
