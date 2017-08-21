@@ -34,6 +34,7 @@ function interpretjob(data) {
         reducesolve(data);
     } else if(data.state==5) {
         console.log("Job finished, redirect to statistics");
+        location.reload();
     }
 }
 

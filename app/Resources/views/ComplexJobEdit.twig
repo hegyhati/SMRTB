@@ -3,7 +3,7 @@
 <form action="{{ path('complexSaveJob', {'jobid': job.getId()}) }}" method="POST">
     <div class="form-group">
         <label for="name">Project name:</label>
-        <input class="form-control" name='name' value="{{job.getName()}}" />
+        <input class="form-control" id='jobname' name='name' value="{{job.getName()}}" />
     </div>
     <div class="form-group">
         <label for="mapfunction">Map function:</label>
@@ -42,7 +42,7 @@ function reduce (key,values) {
     </div>
     <div class="form-group">
         <label for="input">Input:</label>
-        <textarea rows="10"  class="form-control" name="input" style="font-family:monospace;">{{job.getInputFile()}}</textarea>
+        <textarea rows="10"  class="form-control" id="input" name="input" style="font-family:monospace;">{{job.getInputFile()}}</textarea>
     </div>
     
     

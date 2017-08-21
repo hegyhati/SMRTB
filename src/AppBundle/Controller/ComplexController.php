@@ -40,8 +40,8 @@ class ComplexController extends Controller
         $job = new Job();
         $job 
             -> setName("New Project")
-            -> setMapFunction("\n\n\tfor(i=0;i<inputchunk.length;i++) \n\t\tpairs.push({key: inputchunk[i], value: 1});")
-            -> setReduceFunction("\n\n\tresult=0;\n\n\tfor(i in values) result+=parseInt(values[i])")
+            -> setMapFunction("\n\n    for(i=0;i<inputchunk.length;i++) \n        pairs.push({key: inputchunk[i], value: 1});")
+            -> setReduceFunction("\n\n    result=0;\n\n    for(i in values) result+=parseInt(values[i])")
             -> setInputFile("It,s,a,dangerous,business,Frodo,going,out,your,door,You,step,onto,the,road,and,if,you,don,t,keep,your,feet,there,s,no,knowing,where,you,might,be,swept,off,to");
                 
         $em->persist($job);
@@ -142,6 +142,33 @@ class ComplexController extends Controller
         return new JsonResponse($dataa);
     }
 
+    /**
+    * @Route("/complex/{jobid}/finalize", name="complexFinalizeJob")
+    * @Method("POST")
+    */
+    public function complexFinalizeJobAction($jobid)
+    {
+        $em=$this->getDoctrine()->getManager();
+		$repository=$this->getDoctrine()->getRepository('AppBundle:Job');
+        $request = Request::createFromGlobals();
+        $json = json_decode($request->getContent());
+        
+        $job = $repository->findOneById($jobid);
+        $job 
+            -> setName($json->name)
+            -> setMapFunction($json->mapfunction)
+            -> setReduceFunction($json->reducefunction)
+            -> setInputFile($json->input)
+            -> setState(1);
+        $em->flush();        
+		 
+		return new JsonResponse();
+    }
    
 }
 ?>
+
+
+
+
+

@@ -41,25 +41,7 @@
 
 
 {% block javascripts %}
-<script>
-    function testMap(){
-        var code="var pairs=[];\n"+document.getElementById("mapfunction").value+"\nreturn pairs;";        
-        console.log(code);
-        var map = Function("inputchunk", code);
-        var pairs=map(document.getElementById("chunk").value);
-        document.getElementById("mapoutput").innerHTML=JSON.stringify(pairs,null,2);    
-    }
-    function testReduce(){
-        var code="var result;\n"+document.getElementById("reducefunction").value+"\nreturn {key: key, value: result};";        
-        console.log(code);
-        var reduce = Function("key", "values", code);
-        var result=reduce(document.getElementById("key").value,document.getElementById("values").value.split(","));
-        document.getElementById("reduceoutput").value=JSON.stringify(result,null,2);  
-    }
-    
-    function finalize() {}
-</script>
-
-
+<script>function getJobId(){return {{job.getId()}};}</script>
+<script src="{{ asset('js/complextestbed.js') }}"></script>
 {% endblock %}
   

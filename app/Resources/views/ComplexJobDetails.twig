@@ -26,13 +26,13 @@
         <hr />
         <h2>Map</h2>
         <div class="progress">
-            <div id="map-progressbar" class="progress-bar progress-bar-striped active role="progressbar" aria-valuenow="{{job.getMapDone()}}" aria-valuemin="0" aria-valuemax="{{job.getMapCount()}}" style="width:{{job.getMapProgress()}}%">
+            <div id="map-progressbar" class="progress-bar progress-bar-striped {% if job.getState()<5 %} active {% endif %} role="progressbar" aria-valuenow="{{job.getMapDone()}}" aria-valuemin="0" aria-valuemax="{{job.getMapCount()}}" style="width:{{job.getMapProgress()}}%">
             {{job.getMapDone()}}/{{job.getMapCount()}}
             </div>
         </div>
         <h2>Reduce</h2>
         <div class="progress">
-            <div id="reduce-progressbar" class="progress-bar progress-bar-striped active role="progressbar" aria-valuenow="{{job.getReduceDone()}}" aria-valuemin="0" aria-valuemax="{{job.getReduceCount()}}" style="width:{{job.getReduceProgress()}}%">
+            <div id="reduce-progressbar" class="progress-bar progress-bar-striped {% if job.getState()<5 %} active {% endif %} role="progressbar" aria-valuenow="{{job.getReduceDone()}}" aria-valuemin="0" aria-valuemax="{{job.getReduceCount()}}" style="width:{{job.getReduceProgress()}}%">
             {{job.getReduceDone()}}/{{job.getReduceCount()}}
             </div>
         </div>
