@@ -6,4 +6,4 @@ This project was quickly put together for demonstration purposes. I'm not an exp
 
 For the installation, probably only the database setup is needed.
 
-Here is a short [demo|https://youtu.be/P5BEcdXxTis]
+Here is a short [demo](https://youtu.be/P5BEcdXxTis), enjoy
