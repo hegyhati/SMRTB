@@ -46,18 +46,14 @@
         var code="var pairs=[];\n"+document.getElementById("mapfunction").value+"\nreturn pairs;";        
         console.log(code);
         var map = Function("inputchunk", code);
-        console.log(document.getElementById("chunk").value);
         var pairs=map(document.getElementById("chunk").value);
-        console.log(pairs);
         document.getElementById("mapoutput").innerHTML=JSON.stringify(pairs,null,2);    
     }
     function testReduce(){
         var code="var result;\n"+document.getElementById("reducefunction").value+"\nreturn {key: key, value: result};";        
         console.log(code);
         var reduce = Function("key", "values", code);
-        console.log(document.getElementById("values").value.split(","))
         var result=reduce(document.getElementById("key").value,document.getElementById("values").value.split(","));
-        console.log(result);
         document.getElementById("reduceoutput").value=JSON.stringify(result,null,2);  
     }
     

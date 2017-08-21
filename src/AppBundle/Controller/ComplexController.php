@@ -40,9 +40,9 @@ class ComplexController extends Controller
         $job = new Job();
         $job 
             -> setName("New Project")
-            -> setMapFunction("\n\n\t// do some code with pairs.push({key: foo, value: bar});")
-            -> setReduceFunction("function reduce (key, values) {\n\tvar result;\n\n\t // do something to calculate result based on values\n\n\treturn {key: key, value: result};\n}")
-            -> setInputFile("Add,some,input,separated,with,commas");
+            -> setMapFunction("\n\n\tfor(i=0;i<inputchunk.length;i++) \n\t\tpairs.push({key: inputchunk[i], value: 1});")
+            -> setReduceFunction("\n\n\tresult=0;\n\n\tfor(i in values) result+=parseInt(values[i])")
+            -> setInputFile("It,s,a,dangerous,business,Frodo,going,out,your,door,You,step,onto,the,road,and,if,you,don,t,keep,your,feet,there,s,no,knowing,where,you,might,be,swept,off,to");
                 
         $em->persist($job);
         $em->flush();        
