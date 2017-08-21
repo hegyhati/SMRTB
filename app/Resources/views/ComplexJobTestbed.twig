@@ -1,0 +1,69 @@
+
+<h1>Testbed for the functions</h1>
+
+
+
+
+<hr />
+
+<h3>Test Map function</h3>
+
+<form>
+    <div class="form-group">
+        <label for="chunk">Map input (chunk):</label>
+        <input class="form-control" id='chunk' value="Write Your test chunk here" />
+    </div>
+    <button onclick="testMap()" type="button" class="btn btn-default">Test Map</button>
+    <div class="form-group">
+        <label for="mapoutput">Map output:</label>
+        <textarea rows="10"  class="form-control" id="mapoutput" style="font-family:monospace;"></textarea>
+    </div>        
+</form>
+<hr />
+
+<h3>Test Reduce function</h3>
+
+<form>
+    <div class="form-group">
+        <label for="chunk">Reduce key:</label>
+        <input class="form-control" id='key' value="key" />
+        <label for="chunk">Reduce values:</label>
+        <input class="form-control" id="values" value="1,2,3,4,5" /> 
+    </div> 
+    <button onclick="testReduce()" type="button" class="btn btn-default">Test Reduce</button>
+        <input disabled class="form-control" id='reduceoutput' value="" />    
+</form>
+
+<hr />
+
+<button width="80%" onclick="finalize()" type="button" class="btn">I'm happy with the tests, finalize the Project!</button>
+
+
+
+{% block javascripts %}
+<script>
+    function testMap(){
+        var code="var pairs=[];\n"+document.getElementById("mapfunction").value+"\nreturn pairs;";        
+        console.log(code);
+        var map = Function("inputchunk", code);
+        console.log(document.getElementById("chunk").value);
+        var pairs=map(document.getElementById("chunk").value);
+        console.log(pairs);
+        document.getElementById("mapoutput").innerHTML=JSON.stringify(pairs,null,2);    
+    }
+    function testReduce(){
+        var code="var result;\n"+document.getElementById("reducefunction").value+"\nreturn {key: key, value: result};";        
+        console.log(code);
+        var reduce = Function("key", "values", code);
+        console.log(document.getElementById("values").value.split(","))
+        var result=reduce(document.getElementById("key").value,document.getElementById("values").value.split(","));
+        console.log(result);
+        document.getElementById("reduceoutput").value=JSON.stringify(result,null,2);  
+    }
+    
+    function finalize() {}
+</script>
+
+
+{% endblock %}
+  

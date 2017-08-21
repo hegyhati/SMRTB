@@ -7,11 +7,38 @@
     </div>
     <div class="form-group">
         <label for="mapfunction">Map function:</label>
-        <textarea rows="10"  class="form-control" name="mapfunction" style="font-family:monospace;">{{job.getMapFunction()}}</textarea>
+
+
+        
+<textarea rows=2; disabled class="form-control" name='mapfunctionstart' id='mapfunctionstart'style="font-family:monospace;resize:none">
+function map (inputchunk) {
+    var pairs=[];</textarea>
+    
+    
+    
+        <textarea rows="10"  class="form-control" name="mapfunction" id="mapfunction" style="font-family:monospace;resize:vertical">{{job.getMapFunction()}}</textarea>
+
+
+<textarea rows=2; disabled class="form-control" name='mapfunctionend' id='mapfunctionend'style="font-family:monospace;resize:none">
+    return pairs;
+}</textarea>
+    
+    
+    
     </div>
-    <div class="form-group">
+    <div class="form-group">        
         <label for="reducefunction">Reduce function:</label>
-        <textarea rows="10"  class="form-control" name="reducefunction" style="font-family:monospace;">{{job.getReduceFunction()}}</textarea>
+        
+<textarea rows="2" disabled class="form-control" id='reducefunctionstart' name='reducefunctionstart' style="font-family:monospace;">
+function reduce (key,values) {
+    var result;</textarea>
+
+        <textarea rows="10"  class="form-control" id="reducefunction" name="reducefunction" style="font-family:monospace;">{{job.getReduceFunction()}}</textarea>
+        
+<textarea rows="2" disabled class="form-control" id='reducefunctionend' name='reducefunctionend' style="font-family:monospace;">
+    return {key: key, value: result};
+}</textarea>
+
     </div>
     <div class="form-group">
         <label for="input">Input:</label>

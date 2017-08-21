@@ -44,7 +44,7 @@
         
         <div class="col-sm-4">
             {% if job.getState()==0 %}            
-                <div class="alert alert-danger">project editor testbed will be displayed here</div>
+                {% include 'ComplexJobTestbed.twig'%}
             {% elseif job.getState()<5 %} 
                 {% include 'ComplexJobContribution.twig'%}
             {% else %}
